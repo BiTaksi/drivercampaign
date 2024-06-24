@@ -1,0 +1,27 @@
+version: '3.7'
+services:
+  web:
+    build:
+      context: .
+      dockerfile: deployments/api/dev/Dockerfile
+    container_name: web-driver-campaign
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./:/app
+      - go-modules-volume:/go/pkg/mod
+    environment:
+      - VAULT_URL=
+      - VAULT_APP_ROLE_ID=
+      - VAULT_ENV=
+      - VAULT_WORKSPACE=rideraccount
+      - VAULT_SECRET_ID_PATH=
+    networks:
+      - network-driver-campaign
+
+networks:
+  network-driver-campaign:
+    driver: bridge
+
+volumes:
+  go-modules-volume:
