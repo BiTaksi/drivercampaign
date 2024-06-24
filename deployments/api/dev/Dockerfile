@@ -1,4 +1,4 @@
-FROM golang:1.22.2-alpine
+FROM golang:1.22.4-alpine
 
 RUN apk --no-cache add build-base git gcc openssh-client curl
 
