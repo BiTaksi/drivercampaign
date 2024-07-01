@@ -1,16 +1,16 @@
 package main
 
 import (
+	dc "github.com/BiTaksi/drivercampaign"
+	"github.com/BiTaksi/drivercampaign/internal/middleware"
+	"github.com/BiTaksi/drivercampaign/internal/route"
+	"github.com/BiTaksi/drivercampaign/pkg/response"
+	"github.com/BiTaksi/drivercampaign/pkg/utils"
+	"github.com/BiTaksi/drivercampaign/pkg/validation"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/requestid"
 	"github.com/nicksnyder/go-i18n/v2/i18n"
 	"github.com/sirupsen/logrus"
-
-	dc "github.com/BiTaksi/drivercampaign"
-	"github.com/BiTaksi/drivercampaign/internal/middleware"
-	"github.com/BiTaksi/drivercampaign/pkg/response"
-	"github.com/BiTaksi/drivercampaign/pkg/utils"
-	"github.com/BiTaksi/drivercampaign/pkg/validation"
 
 	"github.com/BiTaksi/drivercampaign/pkg/nrclient"
 	"github.com/BiTaksi/drivercampaign/pkg/requestclient"
@@ -45,6 +45,10 @@ func initApplication(a *application) *fiber.App {
 
 	// Common middleware
 	a.addCommonMiddleware(app)
+	r := dc.InitRoute(a.logger, a.requestClientInstance)
+	r.SetupRoutes(&route.AppContext{
+		App: app,
+	})
 
 	// 404 handler
 	app.Use(func(c *fiber.Ctx) error {

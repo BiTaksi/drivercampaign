@@ -9,6 +9,7 @@ package drivercampaign
 import (
 	"github.com/BiTaksi/drivercampaign/internal/handler"
 	"github.com/BiTaksi/drivercampaign/internal/route"
+	"github.com/BiTaksi/drivercampaign/internal/service"
 	"github.com/BiTaksi/drivercampaign/pkg/requestclient"
 	"github.com/google/wire"
 	"github.com/sirupsen/logrus"
@@ -23,7 +24,9 @@ func InitHealthCheckHandler() handler.IHealthCheckHandler {
 
 func InitRoute(l *logrus.Logger, rqInstance requestclient.IRequestClient) route.IRoute {
 	iHomeHandler := handler.NewHomeHandler()
-	iRoute := route.NewRoute(iHomeHandler)
+	iCampaignService := service.NewCampaignService()
+	iCampaignHandler := handler.NewCampaignHandler(iCampaignService)
+	iRoute := route.NewRoute(iHomeHandler, iCampaignHandler)
 	return iRoute
 }
 
